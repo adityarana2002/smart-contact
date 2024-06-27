@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{base::layout(~{::section})}">
+
+<head>
+    <title>Spring Boot Thymeleaf Example</title>
+</head>
+
+<body>
+    <h1>Hello </h1>
+    <section>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <div class="my-card ">
+
+                        <!-- This is show notification user is registered or not  -->
+                        <div th:if="${session.message}" th:classappend="${session.message.type}" class="alert"
+                            role="alert">
+                            <p class="text-center" th:text="${session.message.content}"></p>
+
+                            <th:block th:text=" ${@sessionHelper.removeMessageFromSession()}"></th:block>
+                        </div>
+
+                        <div class="container text-center">
+                            <img style="width: 80px;" src="" th:src="@{/img/membership.png}" alt="">
+                        </div>
+
+                        <h1 class="text-center">Register Here !!</h1>
+                        <form novalidate th:action="@{/do-register}" method="post" th:object="${user}">
+
+                            <!-- This is name field -->
+                            <div class="mb-3">
+                                <label for="name_field" class="form-label">Your Name</label>
+                                <input name="name" type="text" class="form-control "
+                                    th:classappend="${#fields.hasErrors('name') ? 'is-invalid':''}" id="name_field"
+                                    placeholder="Enter here" required th:value="${user.name}" />
+                                <div class="invalid-feedback" th:each="e:${#fields.errors('name')}" th:text="${e}">
+                                </div>
+                            </div>
+
+                            <!-- This is Email field -->
+                            <div class="mb-3">
+                                <label for="email_field" class="form-label">Your Email</label>
+                                <input name="email" type="text" class="form-control" id="email_field"
+                                    placeholder="Enter Email here" required th:value="${user.email}">
+                            </div>
+
+                            <!-- This is Password field -->
+                            <div class="mb-3">
+                                <label for="password_field" class="form-label">Your Password</label>
+                                <input name="password" type="password" class="form-control" id="password_field"
+                                    placeholder="Enter new password here" required>
+                            </div>
+
+                            <!-- This is about field -->
+                            <div class="form-group">
+                                <textarea name="about" rows="5" class="form-control" th:value="${user.about}"
+                                    placeholder="Enter something yourself"></textarea>
+                            </div>
+
+                            <!-- Terms and condition agreement -->
+                            <div class="form-group form-check ">
+                                <input type="checkbox" name="agreement" class="form-check-input " id="agreement" />
+                                <label for="agreement">Accept terms and Conditions</label>
+                            </div>
+
+                            <!-- This is Buttong field -->
+                            <div class="container text-center mt-3">
+                                <button type="submit" class="btn bg-primary text-white">Submit</button>
+                                <button type="reset" class="btn btn-warning text-black-50 ">Reset</button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+
+</html>
